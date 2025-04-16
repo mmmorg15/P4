@@ -1,3 +1,4 @@
+# Import packages
 from sqlalchemy import create_engine, text
 import pandas as pd
 import matplotlib.pyplot as plot
@@ -6,14 +7,18 @@ import psycopg2
 
 
 
-
+# Create a variable to enter the while loop. Until bContinue = False, continue the loop
 bcontinue = True
+
+# Initialize the while loop
 while bcontinue:
+    # Collect input from the user
     print("If you want to import data, enter 1.\nIf you want to see summaries of stored data, enter 2.\nEnter any other value to exit the program: ")
     userInput = input("Please Enter Value: ")
-# PART 1: If they enter 1, do the following:
+
+    # PART 1: If they enter 1, do the following:
     if userInput == '1': 
-        # 1.	Read the Retail_Sales_Data.xlsx into python. I recommend using pandas for this, though you could use openpyxl.
+        # 1.	Read the Retail_Sales_Data.xlsx into python.
         df = pd.read_excel("Retail_Sales_Data.xlsx")
 
         # 2.	Separate the "name” column into a “first_name” and “last_name” column and delete (or overwrite) the original “name” column
@@ -24,7 +29,7 @@ while bcontinue:
         df.insert(2, "Last Name", dfSeparateNames["Last Name"])
         del df['name']
 
-        # 3.	Fix the “category” column so that the categories actually match the product that was sold (see the hints section for specific details the new category values)
+        # 3.	Fix the “category” column so that the categories actually match the product that was sold
         productCategoriesDict = {
             'Camera': 'Technology',
             'Laptop': 'Technology',
@@ -76,15 +81,13 @@ while bcontinue:
         dfImported = pd.read_sql_query('SELECT * FROM sale', engine)
         categories = dfImported['category'].unique()
 
+        categorydict = {}
+
         for index, category in enumerate(categories, start=1):
+            categorydict[index] = category
             print(f"{index}. {category}")
         print()
 
-        categorydict = {1: 'Technology',
-                        2: 'Apparel',
-                        3: 'Accessories',
-                        4: 'Household Items',
-                        5: 'Stationery',}
 
     # 3.	Print out: “Please enter the number of the category you want to see summarized: “
         print("Please enter the number of the category you want to see summarized: ")
@@ -92,6 +95,7 @@ while bcontinue:
         selectedCategory = categorydict[sumCategory]
 
         dfFiltered = dfImported[dfImported['category']== selectedCategory]
+        
     # 4.	Then, for the entered category, calculate and display the sum of total sales, the average sale amount, and the total units sold.
         total_sales = dfFiltered['total_price'].sum()
         avg_sale = dfFiltered['total_price'].mean()

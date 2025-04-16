@@ -1,3 +1,10 @@
+# Colby Eastmond, Merrick Morgan, Spencer Jorgenson, Jacob Lee, Talon Condie
+# P4 - Retail Sales Pandas and Postgres
+
+# The purpose of this assignment is to use Pandas and Postgres to interact with an excel file, create a database table
+# and pull data from a Postgres database table
+
+
 # Import packages
 from sqlalchemy import create_engine, text
 import pandas as pd
@@ -95,7 +102,7 @@ while bcontinue:
         selectedCategory = categorydict[sumCategory]
 
         dfFiltered = dfImported[dfImported['category']== selectedCategory]
-        
+
     # 4.	Then, for the entered category, calculate and display the sum of total sales, the average sale amount, and the total units sold.
         total_sales = dfFiltered['total_price'].sum()
         avg_sale = dfFiltered['total_price'].mean()
